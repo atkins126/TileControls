@@ -964,14 +964,10 @@ begin
 //        Position:=Control.BoundsRect.TopLeft;
         Position:=Items[before].Position;
       end;
-      if (Control <> Nil) then begin
+      Size1:=Point(0, 0);
+      if Control <> Nil then
         Owner.CalculateControlSize(Control, ParentRect, Size1);
-        Owner.CalculateControlSize(ATileControl, ParentRect, Size2);
-      end
-      else begin
-        Size1:=Point(0, 0);
-        Owner.CalculateControlSize(ATileControl, ParentRect, Size2);
-      end;
+      Owner.CalculateControlSize(ATileControl, ParentRect, Size2);
 
       if Owner.Orientation = sbVertical then begin
         if cellsToSize(Position.X + Size1.X + Size2.X, Owner.Spacer) > ParentRect.Right then begin
@@ -2127,7 +2123,7 @@ var
   function HeightOfText(ACanvas: TCanvas; AText: String; var ARect: TRect; HAlignment: TAlignment; const VAlignment: TVerticalAlignment; WordWrap: Boolean; CanDraw: Boolean = False): Integer;
   const
     HAlignments: Array[TAlignment] of LongWord = (DT_LEFT, DT_RIGHT, DT_CENTER);
-    VAlignments: array[TVerticalAlignment] of Longint = (DT_TOP, DT_BOTTOM, DT_VCENTER);
+    VAlignments: array[TVerticalAlignment] of LongWord = (DT_TOP, DT_BOTTOM, DT_VCENTER);
     WordWrapOrNot: Array[Boolean] of LongWord = (DT_SINGLELINE, DT_WORDBREAK);
     DrawOrNot: Array[Boolean] of LongWord = (DT_CALCRECT, 0);
   var
@@ -2473,8 +2469,8 @@ begin
   with TargetCanvas do begin
     //Lock;// already locked by TCustomControl.PaintWindow(DC: HDC);
     //try
+      text_rect:=TargetControl.ClientRect;
       if (IcoWidth > 0) and (IcoHeight > 0) then begin
-        text_rect:=TargetControl.ClientRect;
         InflateRect(text_rect, -2, -2);
         if (TargetControl.Glyph.AlignWithCaption > gacNone) and (CaptionText <> '') then begin
           Font.Assign(TargetControl.Font);
@@ -3253,7 +3249,7 @@ begin
 //  LControlState:=Self.ControlState;
 //  Exclude(LControlState, csPrintClient);
 //  Self.ControlState:=LControlState;
-  Message.Result:=1;
+//  Message.Result:=1;
   inherited;
 end;
 
